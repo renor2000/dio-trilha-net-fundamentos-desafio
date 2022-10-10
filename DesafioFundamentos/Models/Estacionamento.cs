@@ -14,6 +14,7 @@ namespace DesafioFundamentos.Models
 
         public void AdicionarVeiculo()
         {
+            // Implementado!
             // DONE: Pedir para o usuário digitar uma placa (ReadLine) e adicionar na lista "veiculos"
             string placa="";
             Console.WriteLine("Digite a placa do veículo para estacionarrr:");
@@ -23,7 +24,7 @@ namespace DesafioFundamentos.Models
             {
                 veiculos.Add(placa);
                 Console.WriteLine($"\nPlaca {placa} adicionada com sucesso!");
-                Console.WriteLine($"\nO estacionamento agora está com {veiculos.Count} veículos.\n");
+                Console.WriteLine($"\nO estacionamento agora está com {veiculos.Count} veículo(s).\n");
             }
             else
             {
@@ -52,34 +53,40 @@ namespace DesafioFundamentos.Models
                     horas = 0;
                     while (!blnHorasValidas)
                     {
-                        Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado(Pelo menos 1 hora será cobrada, mesmo não tendo-a completado):");
+                        Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado\n(Qualquer fração será cobrada a hora completa. Pelo menos 1 hora será cobrada)\n(Digite 999 para cancelar a remoção do veículo e voltar ao menu principal)\n=> ");
 
+                        // Implementado!
                         // DONE: Pedir para o usuário digitar a quantidade de horas que o veículo permaneceu estacionado,
                         // DONE: Realizar o seguinte cálculo: "precoInicial + precoPorHora * horas" para a variável valorTotal                
 
                         strLeituraTeclado = Console.ReadLine();
                         blnHorasValidas = decimal.TryParse(strLeituraTeclado, out horas);
 
+                        if (strLeituraTeclado.IndexOf(',')>0)
+                           { horas = Convert.ToInt32(strLeituraTeclado.Substring(0,strLeituraTeclado.IndexOf(",")))+1;
+                             blnHorasValidas=true;
+                           }
+                        else if (strLeituraTeclado.IndexOf('.')>0)
+                                {horas = Convert.ToInt32(strLeituraTeclado.Substring(0,strLeituraTeclado.IndexOf(".")))+1;
+                                 blnHorasValidas=true;
+                                }
                         if  (horas==0)
-                        {
-                            horas = 1;
-                        }
-/*
-                        if ((horas - Convert.ToInt32(horas))<0){}
-                        else
-                        {
-                        blnHorasValidas = false;
-                        }                        */
+                            {horas = 1;
+                            blnHorasValidas=true;}
+
+                        if (horas==999)
+                           {return;}
 
                         if (!blnHorasValidas)
                         {
-                            Console.WriteLine("Quuantidade de Horas inválida. Favor digitar novamente.");
+                            Console.WriteLine("\nQuantidade de Horas inválida. Favor digitar novamente.");
                         }
                     }
 
                     valorTotal = Convert.ToDecimal(precoInicial + horas*precoPorHora);
                     veiculos.Remove(placa);
-                    Console.WriteLine($"O veículo {placa} foi removido e o preço total foi R$ {valorTotal}({horas} horas)");
+                    Console.WriteLine($"\nO veículo {placa} foi removido e o preço total foi R$ {valorTotal}({horas} hora(s))");
+                    Console.WriteLine($"\nO estacionamento agora está com {veiculos.Count} veículo(s).\n");
                 }
                 else
                 {
@@ -91,13 +98,14 @@ namespace DesafioFundamentos.Models
         public void ListarVeiculos()
         {
             int contador=0;
+            // Implementado!
             // Verifica se há veículos no estacionamento
             if (veiculos.Any())
             {
                 Console.WriteLine("Veículos estacionados:");
                 foreach (var veiculo in veiculos)
                 {   
-                    Console.WriteLine($"{++contador} . {veiculo}");
+                    Console.WriteLine($"Veículo {++contador}: {veiculo}");
                 }
             }
             else
